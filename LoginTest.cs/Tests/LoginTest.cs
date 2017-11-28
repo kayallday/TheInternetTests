@@ -3,28 +3,22 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using PageObjects;
 
-namespace LoginTest.cs
+namespace Tests
 {
     [TestFixture]
-    public class LoginTest
+    [Parallelizable]
+    class LoginTest : BaseTest
     {
-        IWebDriver Driver;
         LoginPage Login;
 
         [SetUp]
-        public void SetUp()
+        public new void SetUp()
         {
-            Driver = new ChromeDriver();
             Login = new LoginPage(Driver); 
         }
 
-        [TearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         [Test]
+        [Category("Shallow")]
         public void ValidAccount()
         {
             Login.With("tomsmith", "SuperSecretPassword!");
@@ -32,10 +26,11 @@ namespace LoginTest.cs
         }
 
         [Test]
+        [Category("Deep")]
         public void BadPasswordProvided()
         {
             Login.With("tomsmith", "SuperSecretPasswad!");
-            Assert.That(Login.FailureMessagePresent);
+            Assert.That(Login.SuccessMessagePresent, Is.Not.True);
         }
      }
 }

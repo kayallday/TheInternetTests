@@ -13,7 +13,7 @@ namespace PageObjects
         By FailureMessage = By.CssSelector(".flash.error");
         public LoginPage(IWebDriver driver) : base(driver)
         {
-            Visit("http://the-internet.herokuapp.com/login");
+            Visit("/login");
             Assert.That(IsDisplayed(LoginForm));
         }
         public void With(string username, string password)

@@ -14,6 +14,13 @@ namespace PageObjects
 
         protected void Visit(string url)
         {
+            if (url.Contains("http"))
+            {
+                Driver.Navigate().GoToUrl(url);
+            } else
+            {
+                Driver.Navigate().GoToUrl(Tests.BaseTest.ApplicationBaseUrl + url);
+            }
             Driver.Navigate().GoToUrl(url);
         }
 
@@ -34,7 +41,26 @@ namespace PageObjects
 
         protected bool IsDisplayed(By locator)
         {
-            return Find(locator).Displayed;
+            try
+            {
+                return Find(locator).Displayed;
+            }
+            catch (OpenQA.Selenium.NoSuchElementException)
+            {
+                return false;
+            }
+        }
+
+        protected bool IsDisplayed(By locator, int maxWaitTime)
+        {
+            try
+            {
+                return Find(locator).Displayed; 
+            }
+            catch (OpenQA.Selenium.NoSuchElementException)
+            {
+                return false;
+            } 
         }
     }
 }
